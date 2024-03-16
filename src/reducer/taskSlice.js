@@ -1,5 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import tasks from "../data/tasks";
 
 export const loadTasks = createAsyncThunk("tasks/loadTasks", async () => {
@@ -12,10 +11,12 @@ const taskSlice = createSlice({
   initialState: {
     tasks: [],
   },
-  extraReducer: {
-    [loadTasks.fulfilled]: (state, action) => {
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(loadTasks.fulfilled, (state, action) => {
       state.tasks = action.payload;
-    },
+    });
   },
 });
+
 export default taskSlice.reducer;
