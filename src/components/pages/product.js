@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Product_item } from "../elements/product_item";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addInCart } from "../../reducers/cart_reducer";
 
 export function Product({}) {
   const { id } = useParams();
@@ -15,6 +17,18 @@ export function Product({}) {
   )[0];
   const imgsSlider = [product.img1, product.img2, product.img3];
   const [i, setI] = useState(0);
+  const dispatch = useDispatch();
+
+  function addProductInCart(id) {
+    id=id.split(":")[1]
+    console.log(id)
+    dispatch(
+      addInCart({
+        id,
+      })
+    );
+  }
+
   function nextSliderLeft() {
     if (i === 0) {
       setI(2);
@@ -212,7 +226,7 @@ export function Product({}) {
           </details>
         </div>
 
-        <div class="content_add_to_cart buy">
+        <div onClick={() => addProductInCart(id)} class="content_add_to_cart buy">
           <svg
             width="27"
             height="25"

@@ -8,12 +8,15 @@ import { openCatalog } from "../../reducers/catalog_reducer";
 import { filtrCatalog } from "../../reducers/catalog_reducer";
 import React, { useEffect } from "react";
 
-export function Catalog({}) {
+export function Catalog({ }) {
   const dispatch = useDispatch();
-  useEffect(()=>{dispatch(openCatalog())},[])
+  useEffect(() => { dispatch(openCatalog()) }, [])
   const productsForCatalog = useSelector(
     (state) => state.productsForCatalog.arrayFilter
-  );
+  ).slice(0, 9);
+
+  const countPage = Math.ceil(productsForCatalog / 9);
+
   function selectSize(e, size) {
     dispatch(
       filtrCatalog({
@@ -329,7 +332,15 @@ export function Catalog({}) {
               />
             </svg>
           </div>
-          <div class="pageSliderBox"></div>
+          <div class="pageSliderBox">
+{
+  for (let i = 0; i < countPage; i++) 
+   <div>i</div>
+    
+  
+}
+
+          </div>
           <div href="#start" class="rightArrow">
             <svg
               width="9"
