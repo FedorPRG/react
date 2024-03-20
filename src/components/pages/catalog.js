@@ -3,10 +3,25 @@ import { Header } from "../elements/header";
 import { Footer } from "../elements/footer";
 import { Link } from "react-router-dom";
 import { Product_item } from "../elements/product_item";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { openCatalog } from "../../reducers/catalog_reducer";
+import { filtrCatalog } from "../../reducers/catalog_reducer";
+import React, { useEffect } from "react";
 
 export function Catalog({}) {
-  const products = useSelector((state) => state.products.array).slice(0, 9);
+  const dispatch = useDispatch();
+  useEffect(()=>{dispatch(openCatalog())},[])
+  const productsForCatalog = useSelector(
+    (state) => state.productsForCatalog.arrayFilter
+  );
+  function selectSize(e, size) {
+    dispatch(
+      filtrCatalog({
+        e,
+        size,
+      })
+    );
+  }
 
   return (
     <div>
@@ -223,19 +238,39 @@ export function Catalog({}) {
             </summary>
             <div class="sort_box">
               <div class="sort_check">
-                <input class="sort_checkbox" id="sort_check1" type="checkbox" />
+                <input
+                  onChange={(e) => selectSize(e.target.checked, "XS")}
+                  class="sort_checkbox"
+                  id="sort_check1"
+                  type="checkbox"
+                />
                 <label for="sort_check1">XS</label>
               </div>
               <div class="sort_check">
-                <input class="sort_checkbox" id="sort_check2" type="checkbox" />
+                <input
+                  onChange={(e) => selectSize(e.target.checked, "S")}
+                  class="sort_checkbox"
+                  id="sort_check2"
+                  type="checkbox"
+                />
                 <label for="sort_check2">S</label>
               </div>
               <div class="sort_check">
-                <input class="sort_checkbox" id="sort_check3" type="checkbox" />
+                <input
+                  onChange={(e) => selectSize(e.target.checked, "M")}
+                  class="sort_checkbox"
+                  id="sort_check3"
+                  type="checkbox"
+                />
                 <label for="sort_check3">M</label>
               </div>
               <div class="sort_check">
-                <input class="sort_checkbox" id="sort_check4" type="checkbox" />
+                <input
+                  onChange={(e) => selectSize(e.target.checked, "L")}
+                  class="sort_checkbox"
+                  id="sort_check4"
+                  type="checkbox"
+                />
                 <label for="sort_check4">L</label>
               </div>
             </div>
@@ -264,7 +299,7 @@ export function Catalog({}) {
       <section class="product-box center">
         <div class="product-box__container">
           <div class="catalogSlider">
-            {products.map((item) => (
+            {productsForCatalog.map((item) => (
               <Product_item
                 id={item.id}
                 src={item.img}

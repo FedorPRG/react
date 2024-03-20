@@ -1,6 +1,7 @@
 import "../../style/home.css";
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 export function Header({}) {
   const [flag, setFlag] = useState(false);
@@ -8,6 +9,10 @@ export function Header({}) {
   function openCloseNavMenu() {
     setFlag(!flag);
   }
+
+  const productsInCart = useSelector(
+    (state) => state.productsForCart.arrayCart
+  );
 
   return (
     <div>
@@ -109,7 +114,15 @@ export function Header({}) {
           <Link to={"/registration"} class="personal">
             <img src="/img/personal.svg" alt="personal" />
           </Link>
-          <Link to={"/cart"} class="cart item_in_cart">
+          <Link
+            to={"/cart"}
+            className={
+              productsInCart.length === 0
+                ? "cart item_in_cart"
+                : "cart item_in_cart cartCount"
+            }
+            data-count={productsInCart.length}
+          >
             <img src="/img/cart.svg" alt="cart" />
           </Link>
         </div>
