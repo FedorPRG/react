@@ -23,8 +23,8 @@ export const catalog_reducer = createSlice({
       } else {
         let total = [];
         for (const size of state.sized) {
-          const filteredArray = state.array.filter((item) =>
-            (item.size === size)
+          const filteredArray = state.array.filter(
+            (item) => item.size === size
           );
           total = [...total, ...filteredArray];
         }

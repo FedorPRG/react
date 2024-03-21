@@ -6,16 +6,47 @@ import { Product_item } from "../elements/product_item";
 import { useDispatch, useSelector } from "react-redux";
 import { openCatalog } from "../../reducers/catalog_reducer";
 import { filtrCatalog } from "../../reducers/catalog_reducer";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-export function Catalog({ }) {
+export function Catalog({}) {
   const dispatch = useDispatch();
-  useEffect(() => { dispatch(openCatalog()) }, [])
+  useEffect(() => {
+    dispatch(openCatalog());
+  }, []);
+
+  const [page, setPage] = useState(1);
+
   const productsForCatalog = useSelector(
     (state) => state.productsForCatalog.arrayFilter
-  ).slice(0, 9);
+  );
 
-  const countPage = Math.ceil(productsForCatalog / 9);
+  const countPage = Math.ceil(productsForCatalog.length / 9);
+  console.log(countPage);
+  let pagesList = [];
+
+  for (let i = 1; i <= countPage; i++) {
+    pagesList.push(i);
+  }
+
+  function clickPages(page) {
+    setPage(page);
+  }
+
+  function clickPagesLeft() {
+    if (page === 1) {
+      setPage(countPage);
+      return;
+    }
+    setPage(page - 1);
+  }
+
+  function clickPagesRight() {
+    if (page === countPage) {
+      setPage(1);
+      return;
+    }
+    setPage(page + 1);
+  }
 
   function selectSize(e, size) {
     dispatch(
@@ -302,23 +333,28 @@ export function Catalog({ }) {
       <section class="product-box center">
         <div class="product-box__container">
           <div class="catalogSlider">
-            {productsForCatalog.map((item) => (
-              <Product_item
-                id={item.id}
-                src={item.img}
-                srcHover={"/img/product-box_hover.png"}
-                name={item.name}
-                text={item.text}
-                price={item.price}
-              />
-            ))}
+            {productsForCatalog
+              .slice(
+                0 + 9 * (countPage > 1 ? page - 1 : 0),
+                9 + 9 * (countPage > 1 ? page - 1 : 0)
+              )
+              .map((item) => (
+                <Product_item
+                  id={item.id}
+                  src={item.img}
+                  srcHover={"/img/product-box_hover.png"}
+                  name={item.name}
+                  text={item.text}
+                  price={item.price}
+                />
+              ))}
           </div>
         </div>
       </section>
 
       <div class="box-page">
         <div class="box-page_content">
-          <div href="#start" class="leftArrow">
+          <div onClick={clickPagesLeft} class="leftArrow">
             <svg
               width="9"
               height="14"
@@ -333,15 +369,16 @@ export function Catalog({ }) {
             </svg>
           </div>
           <div class="pageSliderBox">
-{
-  for (let i = 0; i < countPage; i++) 
-   <div>i</div>
-    
-  
-}
-
+            {pagesList.map((item) => (
+              <div
+                className={item === page ? "activ" : ""}
+                onClick={() => clickPages(item)}
+              >
+                {item}
+              </div>
+            ))}
           </div>
-          <div href="#start" class="rightArrow">
+          <div onClick={clickPagesRight} class="rightArrow">
             <svg
               width="9"
               height="14"
