@@ -1,6 +1,7 @@
 {
   "name": "hw8",
   "version": "0.1.0",
+  "homepage": "https://FedorPRG.github.io/react_site",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
